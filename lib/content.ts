@@ -8,6 +8,7 @@ export interface Idea {
     id: string;
     title: string;
     date: string;
+    description: string;
     tags: string[];
     connections: string[];
     content: string;
@@ -39,6 +40,7 @@ export function getAllIdeas(): Idea[] {
             id: data.id || slug,
             title: data.title || 'Untitled',
             date: data.date || new Date().toISOString(),
+            description: data.description || '',
             tags: data.tags || [],
             connections: data.connections || [],
             ...data,
