@@ -72,7 +72,7 @@ export default function CursorTrail() {
 
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, size, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(129, 140, 248, ${opacity})`; // Indigo-400
+                ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`; // White
                 ctx.fill();
             }
 

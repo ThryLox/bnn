@@ -37,10 +37,20 @@ const THEMES = {
         nebula3: "#c4b5fd", // Violet-300
         bg1: "#0f0518", // Deep Purple Black
         bg2: "#581c87"  // Purple-900
+    },
+    monochrome: {
+        primary: "#52525b", // Zinc-600
+        secondary: "#18181b", // Zinc-900
+        accent: "#e4e4e7", // Zinc-200
+        nebula1: "#09090b", // Zinc-950
+        nebula2: "#3f3f46", // Zinc-700
+        nebula3: "#a1a1aa", // Zinc-400
+        bg1: "#000000", // Black
+        bg2: "#27272a"  // Zinc-800
     }
 };
 
-const ACTIVE_THEME = THEMES.purple; // Switch to 'indigo' or 'cyan' to revert
+const ACTIVE_THEME = THEMES.monochrome; // Switch to 'indigo' or 'cyan' to revert
 
 function BackgroundGradient() {
     const gradientMaterial = useMemo(() => {
@@ -270,41 +280,18 @@ function BrainModel() {
             const oldOcclusion = mesh.getObjectByName("OcclusionCore");
             if (oldOcclusion) mesh.remove(oldOcclusion);
 
-            // === 1. Glassy Main Body (No Wireframe) ===
-            const glassMat = new THREE.MeshPhysicalMaterial({
-                color: ACTIVE_THEME.primary,
-                emissive: ACTIVE_THEME.secondary,
-                emissiveIntensity: 0.2,
-                transmission: 1.0,
-                thickness: 0.6,
-                roughness: 0.1,
-                metalness: 0.2,
-                envMapIntensity: 2.0,
-                clearcoat: 1.0,
-                clearcoatRoughness: 0.05,
-                transparent: true,
-                opacity: 0.95,
-                ior: 1.4,
-                sheen: 1.0,
-                sheenColor: new THREE.Color(ACTIVE_THEME.accent),
+            // === 1. Ceramic (The Sculpture) ===
+            const ceramicMat = new THREE.MeshStandardMaterial({
+                color: "#f4f4f5", // Zinc-100 (Creamy White)
+                roughness: 0.4, // Smooth matte
+                metalness: 0.1, // Non-metallic
+                transparent: false,
+                opacity: 1.0,
+                side: THREE.FrontSide,
             });
-            mesh.material = glassMat;
+            mesh.material = ceramicMat;
 
-            // === 3. Occlusion Core (Blocks stars) ===
-            const occlusion = new THREE.Mesh(
-                mesh.geometry,
-                new THREE.MeshStandardMaterial({
-                    color: ACTIVE_THEME.secondary,
-                    roughness: 0.3,
-                    metalness: 0.1,
-                    transparent: true,
-                    opacity: 0.8,
-                    side: THREE.FrontSide,
-                })
-            );
-            occlusion.name = "OcclusionCore";
-            occlusion.scale.setScalar(0.98); // Increased from 0.92 to close the gap
-            mesh.add(occlusion);
+            // No Occlusion Core needed for opaque ceramic
         });
     }, [scene]);
 
@@ -316,12 +303,9 @@ function BrainModel() {
         // Neural Light Flow (animated rim glow)
         const t = state.clock.elapsedTime;
         targets.forEach((mesh) => {
-            if (mesh.material && (mesh.material as THREE.MeshPhysicalMaterial).emissive) {
-                const mat = mesh.material as THREE.MeshPhysicalMaterial;
-                // Pulse the glass itself
-                mat.emissiveIntensity = 0.2 + Math.sin(t * 2.0) * 0.1;
-                // Subtle color shift
-                mat.color.setHSL(0.65 + Math.sin(t * 0.3) * 0.02, 0.6, 0.4);
+            if (mesh.material && (mesh.material as THREE.MeshStandardMaterial).color) {
+                // Subtle breathing for ceramic (just slight color shift, no transparency/emissive)
+                // We keep it static or very subtle to look like a solid object
             }
         });
     });

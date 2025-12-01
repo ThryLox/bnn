@@ -73,27 +73,28 @@ export default function ZettelkastenGraph({ ideas }: GraphProps) {
     return (
         <div className="w-full h-[500px] md:h-[600px] rounded-xl overflow-hidden relative group bg-black/20 backdrop-blur-sm border border-white/5">
             {/* Subtle gradient overlay instead of heavy border */}
-            <div className="absolute inset-0 bg-gradient-to-b from-indigo-900/10 to-transparent pointer-events-none" />
+            {/* Subtle gradient overlay instead of heavy border */}
+            <div className="absolute inset-0 bg-gradient-to-b from-zinc-900/10 to-transparent pointer-events-none" />
 
             <div className="absolute top-4 left-4 z-10 pointer-events-none">
-                <h3 className="text-sm font-bold text-indigo-400 uppercase tracking-wider flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse" />
+                <h3 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
                     Neural Map
                 </h3>
             </div>
 
             <div className="absolute bottom-4 right-4 z-10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                <p className="text-xs text-indigo-400/60">Click nodes to navigate</p>
+                <p className="text-xs text-zinc-500">Click nodes to navigate</p>
             </div>
 
             <ForceGraph3D
                 ref={fgRef}
                 graphData={graphData}
                 nodeLabel="name"
-                nodeColor={node => "#818cf8"} // Indigo-400
+                nodeColor={node => "#a1a1aa"} // Zinc-400
                 nodeRelSize={8} // Larger nodes
                 nodeResolution={16}
-                linkColor={() => "#6366f1"} // Indigo-500 (Brighter)
+                linkColor={() => "#71717a"} // Zinc-500
                 linkWidth={3} // Much thicker links
                 linkOpacity={0.5} // More visible
                 backgroundColor="rgba(0,0,0,0)"

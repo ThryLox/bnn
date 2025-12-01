@@ -12,7 +12,7 @@ export default function IdeasPage() {
 
             <header className="mb-16 max-w-4xl">
                 <h1 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight text-white">
-                    <span className="text-indigo-500">Zettelkasten</span> / Ideas
+                    <span className="text-zinc-500">Zettelkasten</span> / Ideas
                 </h1>
                 <p className="text-gray-400 text-lg leading-relaxed max-w-2xl">
                     A collection of thoughts, snippets, and explorations.

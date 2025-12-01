@@ -11,10 +11,10 @@ export default function AboutPage() {
             <article className="max-w-3xl mx-auto">
                 <header className="mb-12">
                     <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight text-white">{title}</h1>
-                    <p className="text-xl text-indigo-300 font-light">{description}</p>
+                    <p className="text-xl text-zinc-400 font-light">{description}</p>
                 </header>
 
-                <div className="prose prose-invert prose-lg max-w-none prose-headings:text-indigo-100 prose-a:text-indigo-400 hover:prose-a:text-indigo-300 prose-strong:text-indigo-200">
+                <div className="prose prose-invert prose-lg max-w-none prose-headings:text-white prose-a:text-zinc-300 hover:prose-a:text-white prose-strong:text-zinc-200">
                     <div className="whitespace-pre-wrap font-sans text-gray-300 leading-relaxed">
                         {content}
                     </div>

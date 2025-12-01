@@ -23,14 +23,14 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
             <NavBar />
 
             <article className="max-w-3xl mx-auto">
-                <Link href="/craft" className="text-indigo-400 hover:text-indigo-300 mb-8 inline-block transition-colors">
+                <Link href="/craft" className="text-zinc-400 hover:text-white mb-8 inline-block transition-colors">
                     ← Back to Craft
                 </Link>
 
                 <header className="mb-12">
                     <div className="flex flex-wrap gap-3 mb-6">
                         {project.tags.map(tag => (
-                            <span key={tag} className="px-3 py-1 rounded-full bg-indigo-900/30 border border-indigo-500/30 text-indigo-300 text-xs uppercase tracking-wider">
+                            <span key={tag} className="px-3 py-1 rounded-full bg-zinc-800/50 border border-zinc-500/30 text-zinc-300 text-xs uppercase tracking-wider">
                                 {tag}
                             </span>
                         ))}
@@ -43,14 +43,14 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
                             href={project.link}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-block mt-6 px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-medium transition-colors"
+                            className="inline-block mt-6 px-6 py-3 bg-white hover:bg-zinc-200 text-black rounded-lg font-medium transition-colors"
                         >
                             View Project External ↗
                         </a>
                     )}
                 </header>
 
-                <div className="prose prose-invert prose-lg max-w-none prose-headings:text-indigo-100 prose-a:text-indigo-400 hover:prose-a:text-indigo-300">
+                <div className="prose prose-invert prose-lg max-w-none prose-headings:text-white prose-a:text-zinc-300 hover:prose-a:text-white">
                     {/* 
                 In a real app, you'd use a markdown renderer here like 'react-markdown' 
                 For now, we'll just display the raw content or simple paragraphs

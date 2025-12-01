@@ -23,7 +23,7 @@ export default function IdeaPage({ params }: { params: { slug: string } }) {
             <NavBar />
 
             <article className="max-w-3xl mx-auto">
-                <Link href="/ideas" className="text-indigo-400 hover:text-indigo-300 mb-8 inline-block transition-colors">
+                <Link href="/ideas" className="text-zinc-400 hover:text-white mb-8 inline-block transition-colors">
                     ← Back to Neural Map
                 </Link>
 
@@ -31,19 +31,19 @@ export default function IdeaPage({ params }: { params: { slug: string } }) {
                     <div className="flex justify-between items-start mb-6">
                         <div className="flex flex-wrap gap-3">
                             {idea.tags.map(tag => (
-                                <span key={tag} className="px-3 py-1 rounded-full bg-indigo-900/30 border border-indigo-500/30 text-indigo-300 text-xs uppercase tracking-wider">
+                                <span key={tag} className="px-3 py-1 rounded-full bg-zinc-800/50 border border-zinc-500/30 text-zinc-300 text-xs uppercase tracking-wider">
                                     {tag}
                                 </span>
                             ))}
                         </div>
-                        <span className="text-sm font-mono text-indigo-500/40">#{idea.id}</span>
+                        <span className="text-sm font-mono text-zinc-600">#{idea.id}</span>
                     </div>
 
                     <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight text-white">{idea.title}</h1>
                     <p className="text-sm font-mono text-gray-500 mb-8">{idea.date}</p>
                 </header>
 
-                <div className="prose prose-invert prose-lg max-w-none prose-headings:text-indigo-100 prose-a:text-indigo-400 hover:prose-a:text-indigo-300 prose-code:text-indigo-300 prose-code:bg-indigo-950/30 prose-code:px-1 prose-code:rounded">
+                <div className="prose prose-invert prose-lg max-w-none prose-headings:text-white prose-a:text-zinc-300 hover:prose-a:text-white prose-code:text-zinc-300 prose-code:bg-zinc-900/50 prose-code:px-1 prose-code:rounded">
                     {/* 
                 In a real app, you'd use a markdown renderer here like 'react-markdown' 
                 For now, we'll just display the raw content or simple paragraphs
@@ -54,14 +54,14 @@ export default function IdeaPage({ params }: { params: { slug: string } }) {
                 </div>
 
                 {idea.connections.length > 0 && (
-                    <div className="mt-16 pt-8 border-t border-indigo-900/30">
-                        <h3 className="text-lg font-bold text-indigo-400 mb-4 uppercase tracking-wider">Connected Nodes</h3>
+                    <div className="mt-16 pt-8 border-t border-zinc-800/50">
+                        <h3 className="text-lg font-bold text-zinc-400 mb-4 uppercase tracking-wider">Connected Nodes</h3>
                         <div className="flex flex-wrap gap-4">
                             {idea.connections.map(connectionId => {
                                 const connectedIdea = ideas.find(i => i.id === connectionId);
                                 if (!connectedIdea) return null;
                                 return (
-                                    <Link key={connectionId} href={`/ideas/${connectedIdea.slug}`} className="px-4 py-2 bg-indigo-950/20 border border-indigo-900/50 rounded-lg hover:bg-indigo-950/40 hover:border-indigo-500/50 transition-all text-sm text-indigo-300">
+                                    <Link key={connectionId} href={`/ideas/${connectedIdea.slug}`} className="px-4 py-2 bg-zinc-900/20 border border-zinc-800 rounded-lg hover:bg-zinc-900/40 hover:border-zinc-500/50 transition-all text-sm text-zinc-300">
                                         {connectedIdea.title}
                                     </Link>
                                 );
