@@ -15,13 +15,14 @@
     "autoprefixer": "^10.4.14",
     "clsx": "^2.1.1",
     "framer-motion": "^10.16.4",
+    "gray-matter": "^4.0.3",
     "next": "^14.2.15",
     "postcss": "^8.4.24",
     "postprocessing": "^6.38.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-force-graph-3d": "^1.29.0",
-    "three": "^0.159.0"
+    "three": "^0.181.2"
   },
   "devDependencies": {
     "@types/node": "^20",
