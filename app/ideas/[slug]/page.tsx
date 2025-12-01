@@ -23,7 +23,7 @@ export default function IdeaPage({ params }: { params: { slug: string } }) {
             <NavBar />
 
             <article className="max-w-3xl mx-auto">
-                <Link href="/ideas" className="text-zinc-400 hover:text-white mb-8 inline-block transition-colors">
+                <Link href="/ideas" className="text-zinc-400 hover:text-emerald-400 mb-8 inline-block transition-colors">
                     ← Back to Neural Map
                 </Link>
 
@@ -31,7 +31,7 @@ export default function IdeaPage({ params }: { params: { slug: string } }) {
                     <div className="flex justify-between items-start mb-6">
                         <div className="flex flex-wrap gap-3">
                             {idea.tags.map(tag => (
-                                <span key={tag} className="px-3 py-1 rounded-full bg-zinc-800/50 border border-zinc-500/30 text-zinc-300 text-xs uppercase tracking-wider">
+                                <span key={tag} className="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs uppercase tracking-wider">
                                     {tag}
                                 </span>
                             ))}
@@ -43,11 +43,7 @@ export default function IdeaPage({ params }: { params: { slug: string } }) {
                     <p className="text-sm font-mono text-gray-500 mb-8">{idea.date}</p>
                 </header>
 
-                <div className="prose prose-invert prose-lg max-w-none prose-headings:text-white prose-a:text-zinc-300 hover:prose-a:text-white prose-code:text-zinc-300 prose-code:bg-zinc-900/50 prose-code:px-1 prose-code:rounded">
-                    {/* 
-                In a real app, you'd use a markdown renderer here like 'react-markdown' 
-                For now, we'll just display the raw content or simple paragraphs
-            */}
+                <div className="prose prose-invert prose-lg max-w-none prose-headings:text-white prose-a:text-emerald-400 hover:prose-a:text-emerald-300 prose-code:text-emerald-300 prose-code:bg-emerald-900/20 prose-code:px-1 prose-code:rounded">
                     <div className="whitespace-pre-wrap font-sans text-gray-300 leading-relaxed">
                         {idea.content}
                     </div>
@@ -61,7 +57,7 @@ export default function IdeaPage({ params }: { params: { slug: string } }) {
                                 const connectedIdea = ideas.find(i => i.id === connectionId);
                                 if (!connectedIdea) return null;
                                 return (
-                                    <Link key={connectionId} href={`/ideas/${connectedIdea.slug}`} className="px-4 py-2 bg-zinc-900/20 border border-zinc-800 rounded-lg hover:bg-zinc-900/40 hover:border-zinc-500/50 transition-all text-sm text-zinc-300">
+                                    <Link key={connectionId} href={`/ideas/${connectedIdea.slug}`} className="px-4 py-2 bg-zinc-900/20 border border-zinc-800 rounded-lg hover:bg-zinc-900/40 hover:border-emerald-500/50 transition-all text-sm text-zinc-300 hover:text-white">
                                         {connectedIdea.title}
                                     </Link>
                                 );

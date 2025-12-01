@@ -47,10 +47,20 @@ const THEMES = {
         nebula3: "#a1a1aa", // Zinc-400
         bg1: "#000000", // Black
         bg2: "#27272a"  // Zinc-800
+    },
+    emerald: {
+        primary: "#059669", // Emerald-600
+        secondary: "#022c22", // Emerald-950
+        accent: "#6ee7b7", // Emerald-300
+        nebula1: "#020617", // Deep Green/Black
+        nebula2: "#064e3b", // Emerald-800
+        nebula3: "#10b981", // Emerald-500
+        bg1: "#020617", // Deep Organic Black
+        bg2: "#064e3b"  // Dark Emerald
     }
 };
 
-const ACTIVE_THEME = THEMES.monochrome; // Switch to 'indigo' or 'cyan' to revert
+const ACTIVE_THEME = THEMES.emerald; // Switch to 'indigo' or 'cyan' to revert
 
 function BackgroundGradient() {
     const gradientMaterial = useMemo(() => {
@@ -280,18 +290,27 @@ function BrainModel() {
             const oldOcclusion = mesh.getObjectByName("OcclusionCore");
             if (oldOcclusion) mesh.remove(oldOcclusion);
 
-            // === 1. Ceramic (The Sculpture) ===
-            const ceramicMat = new THREE.MeshStandardMaterial({
-                color: "#f4f4f5", // Zinc-100 (Creamy White)
-                roughness: 0.4, // Smooth matte
-                metalness: 0.1, // Non-metallic
-                transparent: false,
+            // === 1. Jade Crystal (The Gem) ===
+            const jadeMat = new THREE.MeshPhysicalMaterial({
+                color: ACTIVE_THEME.primary, // Emerald-600
+                emissive: ACTIVE_THEME.secondary, // Deep Green glow
+                emissiveIntensity: 0.2,
+                transmission: 0.6, // Semi-transparent like jade
+                thickness: 3.0, // Thick volume
+                roughness: 0.1, // Polished
+                metalness: 0.0,
+                envMapIntensity: 3.0, // High reflection
+                clearcoat: 1.0, // Glassy coating
+                clearcoatRoughness: 0.1,
+                transparent: true,
                 opacity: 1.0,
-                side: THREE.FrontSide,
+                ior: 1.6, // Jade/Gemstone IOR
+                attenuationColor: new THREE.Color(ACTIVE_THEME.secondary), // Darker inside
+                attenuationDistance: 1.0,
             });
-            mesh.material = ceramicMat;
+            mesh.material = jadeMat;
 
-            // No Occlusion Core needed for opaque ceramic
+            // No Occlusion Core needed as material is thick enough to obscure stars naturally
         });
     }, [scene]);
 
@@ -303,9 +322,11 @@ function BrainModel() {
         // Neural Light Flow (animated rim glow)
         const t = state.clock.elapsedTime;
         targets.forEach((mesh) => {
-            if (mesh.material && (mesh.material as THREE.MeshStandardMaterial).color) {
-                // Subtle breathing for ceramic (just slight color shift, no transparency/emissive)
-                // We keep it static or very subtle to look like a solid object
+            if (mesh.material && (mesh.material as THREE.MeshPhysicalMaterial).emissive) {
+                const mat = mesh.material as THREE.MeshPhysicalMaterial;
+                // Slow, deep crystal resonance
+                const pulse = Math.sin(t * 0.5) * 0.5 + 0.5; // Slow pulse
+                mat.emissiveIntensity = 0.2 + pulse * 0.1;
             }
         });
     });

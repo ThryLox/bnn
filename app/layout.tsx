@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased text-white bg-black selection:bg-zinc-500/30" suppressHydrationWarning>
+      <body className="antialiased text-white bg-black selection:bg-emerald-500/30" suppressHydrationWarning>
         <CursorTrail />
         {children}
       </body>

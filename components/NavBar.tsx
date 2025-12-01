@@ -29,9 +29,9 @@ export default function NavBar() {
         >
             <Link href="/" className="text-2xl font-bold tracking-tighter">Harnoor Singh</Link>
             <div className="space-x-8 text-sm font-medium tracking-wide">
-                <Link href="/about" className="hover:text-white transition-colors">About</Link>
-                <Link href="/craft" className="hover:text-white transition-colors">Craft</Link>
-                <Link href="/ideas" className="hover:text-white transition-colors">Ideas</Link>
+                <Link href="/about" className="text-gray-400 hover:text-emerald-400 transition-colors">About</Link>
+                <Link href="/craft" className="text-gray-400 hover:text-emerald-400 transition-colors">Craft</Link>
+                <Link href="/ideas" className="text-gray-400 hover:text-emerald-400 transition-colors">Ideas</Link>
             </div>
         </motion.nav>
     );

@@ -73,7 +73,6 @@ export default function ZettelkastenGraph({ ideas }: GraphProps) {
     return (
         <div className="w-full h-[500px] md:h-[600px] rounded-xl overflow-hidden relative group bg-black/20 backdrop-blur-sm border border-white/5">
             {/* Subtle gradient overlay instead of heavy border */}
-            {/* Subtle gradient overlay instead of heavy border */}
             <div className="absolute inset-0 bg-gradient-to-b from-zinc-900/10 to-transparent pointer-events-none" />
 
             <div className="absolute top-4 left-4 z-10 pointer-events-none">
@@ -91,12 +90,12 @@ export default function ZettelkastenGraph({ ideas }: GraphProps) {
                 ref={fgRef}
                 graphData={graphData}
                 nodeLabel="name"
-                nodeColor={node => "#a1a1aa"} // Zinc-400
-                nodeRelSize={8} // Larger nodes
+                nodeColor={() => "#34d399"} // Emerald-400
+                nodeRelSize={5} // Increased from 4 for better visibility
                 nodeResolution={16}
-                linkColor={() => "#71717a"} // Zinc-500
-                linkWidth={3} // Much thicker links
-                linkOpacity={0.5} // More visible
+                linkColor={() => "#10b981"} // Emerald-500
+                linkWidth={3}
+                linkOpacity={0.5}
                 backgroundColor="rgba(0,0,0,0)"
                 showNavInfo={false}
                 d3VelocityDecay={0.2} // More drag
@@ -105,6 +104,9 @@ export default function ZettelkastenGraph({ ideas }: GraphProps) {
                 nodeThreeObjectExtend={true} // Allow custom shaders if needed later
                 controlType="orbit"
             />
+
+            {/* Overlay Gradient */}
+            <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-emerald-950/10 via-transparent to-transparent" />
         </div>
     );
 }

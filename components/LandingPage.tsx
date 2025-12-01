@@ -57,7 +57,7 @@ export default function LandingPage({ projects, ideas }: LandingPageProps) {
                     >
                         <div className="flex justify-between items-end mb-8">
                             <h2 className="text-4xl font-bold tracking-tight text-white">Craft</h2>
-                            <Link href="/craft" className="text-sm text-gray-500 hover:text-white transition-colors">View All →</Link>
+                            <Link href="/craft" className="text-sm text-gray-500 hover:text-emerald-400 transition-colors">View All →</Link>
                         </div>
 
                         <p className="text-gray-400 text-lg max-w-2xl leading-relaxed mb-12">
@@ -68,7 +68,7 @@ export default function LandingPage({ projects, ideas }: LandingPageProps) {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             {projects.map((project) => (
                                 <Link key={project.id} href={`/craft/${project.slug}`} className="group block">
-                                    <div className="h-full p-6 border border-zinc-800 rounded-lg bg-zinc-900/20 hover:bg-zinc-900/40 transition-colors cursor-pointer">
+                                    <div className="h-full p-6 border border-zinc-800 rounded-lg bg-zinc-900/20 hover:bg-zinc-900/40 hover:border-emerald-500/50 transition-colors cursor-pointer">
                                         <h3 className="text-xl font-semibold mb-2 group-hover:text-white transition-colors">{project.title}</h3>
                                         <p className="text-sm text-gray-500 line-clamp-2">{project.description}</p>
                                     </div>
@@ -88,7 +88,7 @@ export default function LandingPage({ projects, ideas }: LandingPageProps) {
                     >
                         <div className="flex justify-between items-end mb-8">
                             <h2 className="text-4xl font-bold tracking-tight text-white">Neural Map</h2>
-                            <Link href="/ideas" className="text-sm text-gray-500 hover:text-white transition-colors">Explore Graph →</Link>
+                            <Link href="/ideas" className="text-sm text-gray-500 hover:text-emerald-400 transition-colors">Explore Graph →</Link>
                         </div>
 
                         <p className="text-gray-400 text-lg max-w-2xl leading-relaxed mb-12">
@@ -107,7 +107,7 @@ export default function LandingPage({ projects, ideas }: LandingPageProps) {
                                         </h3>
                                         <div className="flex flex-wrap gap-2 mt-auto pt-4">
                                             {idea.tags.slice(0, 2).map((tag) => (
-                                                <span key={tag} className="text-[10px] uppercase tracking-wider px-2 py-1 rounded-full bg-zinc-500/10 text-zinc-300 border border-zinc-500/20">
+                                                <span key={tag} className="text-[10px] uppercase tracking-wider px-2 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                                                     {tag}
                                                 </span>
                                             ))}
