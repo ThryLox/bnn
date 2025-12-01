@@ -3,7 +3,7 @@ import "./globals.css";
 import CursorTrail from "@/components/CursorTrail";
 
 export const metadata: Metadata = {
-  title: "Harnoor Singh | Cognitive Web",
+  title: "Harnoor Singh",
   description: "Exploring consciousness, cognition, and design through interactive 3D systems.",
   openGraph: {
     title: 'Harnoor Singh | Cognitive Web',
