@@ -5,6 +5,7 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, Sphere, useGLTF, Center } from '@react-three/drei';
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import * as THREE from 'three';
+import { GlowShader } from '@/shaders/GlowShader';
 
 // === THEME CONFIGURATION ===
 const THEMES = {
@@ -48,6 +49,16 @@ const THEMES = {
         bg1: "#000000", // Black
         bg2: "#27272a"  // Zinc-800
     },
+    beloit: {
+        primary: "#003865", // Beloit Blue (Classic)
+        secondary: "#F2A900", // Beloit Gold
+        accent: "#F2A900", // Gold (Stars/Dots - matching user request for "different" from white)
+        nebula1: "#0a192f", // Deep Navy
+        nebula2: "#003865", // Beloit Blue
+        nebula3: "#F2A900", // Gold Highlights
+        bg1: "#020617", // Very Dark Navy/Black
+        bg2: "#0a192f", // Deep Navy
+    },
     emerald: {
         primary: "#059669", // Emerald-600
         secondary: "#022c22", // Emerald-950
@@ -60,7 +71,7 @@ const THEMES = {
     }
 };
 
-const ACTIVE_THEME = THEMES.emerald; // Switch to 'indigo' or 'cyan' to revert
+const ACTIVE_THEME = THEMES.beloit; // Switch to 'indigo' or 'cyan' to revert
 
 function BackgroundGradient() {
     const gradientMaterial = useMemo(() => {
@@ -188,9 +199,8 @@ function Nebula() {
     );
 }
 
-function Starfield() {
-    const count = 1600;
-    const radius = 60;
+function Starfield(props: any) {
+    const { count = 1600, radius = 60, color = ACTIVE_THEME.accent } = props;
     const positions = useMemo(() => {
         const pos = new Float32Array(count * 3);
         for (let i = 0; i < count; i++) {
@@ -202,7 +212,7 @@ function Starfield() {
             pos[i * 3 + 2] = r * Math.cos(phi);
         }
         return pos;
-    }, []);
+    }, [count, radius]);
 
     const texture = useMemo(() => {
         if (typeof document === 'undefined') return null;
@@ -225,7 +235,7 @@ function Starfield() {
     useFrame((state) => {
         if (matRef.current)
             matRef.current.size =
-                0.2 + 0.1 * Math.sin(state.clock.elapsedTime * 2.0); // twinkle
+                (props.size || 0.2) + 0.1 * Math.sin(state.clock.elapsedTime * 2.0); // twinkle
         if (groupRef.current) {
             groupRef.current.rotation.y += 0.0008;
             groupRef.current.rotation.x += 0.0003;
@@ -246,8 +256,8 @@ function Starfield() {
                 <pointsMaterial
                     ref={matRef}
                     map={texture}
-                    color={ACTIVE_THEME.accent}
-                    size={0.25}
+                    color={color}
+                    size={props.size || 0.25}
                     transparent
                     opacity={0.9}
                     blending={THREE.AdditiveBlending}
@@ -290,27 +300,49 @@ function BrainModel() {
             const oldOcclusion = mesh.getObjectByName("OcclusionCore");
             if (oldOcclusion) mesh.remove(oldOcclusion);
 
-            // === 1. Jade Crystal (The Gem) ===
+            // === 1. Beloit Blue Crystal (Stable) ===
             const jadeMat = new THREE.MeshPhysicalMaterial({
-                color: ACTIVE_THEME.primary, // Emerald-600
-                emissive: ACTIVE_THEME.secondary, // Deep Green glow
-                emissiveIntensity: 0.2,
-                transmission: 0.6, // Semi-transparent like jade
-                thickness: 3.0, // Thick volume
-                roughness: 0.1, // Polished
-                metalness: 0.0,
-                envMapIntensity: 3.0, // High reflection
-                clearcoat: 1.0, // Glassy coating
+                color: ACTIVE_THEME.primary, // Beloit Blue
+                emissive: ACTIVE_THEME.secondary, // Gold
+                emissiveIntensity: 0.1, // Subtle baseline
+                transmission: 0.0, // OPAQUE to prevent disappearing bug
+                thickness: 0.0,
+                roughness: 0.2,
+                metalness: 0.2,
+                envMapIntensity: 2.0,
+                clearcoat: 1.0,
                 clearcoatRoughness: 0.1,
-                transparent: true,
+                transparent: false, // SOLID
                 opacity: 1.0,
-                ior: 1.6, // Jade/Gemstone IOR
-                attenuationColor: new THREE.Color(ACTIVE_THEME.secondary), // Darker inside
+                ior: 1.5,
+                side: THREE.DoubleSide, // Render both sides
+                attenuationColor: new THREE.Color(ACTIVE_THEME.secondary),
                 attenuationDistance: 1.0,
             });
             mesh.material = jadeMat;
 
-            // No Occlusion Core needed as material is thick enough to obscure stars naturally
+            // Critical Fix: Disable culling
+            mesh.frustumCulled = false;
+
+            // === 2. Outer Glow Layer ===
+            const glowMat = new THREE.ShaderMaterial({
+                uniforms: THREE.UniformsUtils.clone(GlowShader.uniforms),
+                vertexShader: GlowShader.vertexShader,
+                fragmentShader: GlowShader.fragmentShader,
+                side: THREE.BackSide,
+                blending: THREE.AdditiveBlending,
+                transparent: true,
+                depthWrite: false
+            });
+
+            glowMat.uniforms.glowColor.value = new THREE.Color(ACTIVE_THEME.secondary);
+            glowMat.uniforms.c.value = 0.5;
+            glowMat.uniforms.p.value = 4.5;
+
+            const glowMesh = new THREE.Mesh(mesh.geometry, glowMat);
+            glowMesh.name = "GlowLayer";
+            glowMesh.scale.multiplyScalar(1.05); // Slightly larger
+            mesh.add(glowMesh);
         });
     }, [scene]);
 
@@ -318,6 +350,17 @@ function BrainModel() {
         if (groupRef.current) {
             groupRef.current.rotation.y += delta * 0.02;
         }
+
+        // Update glow shader viewVector
+        targets.forEach((mesh) => {
+            const glowLayer = mesh.getObjectByName("GlowLayer") as THREE.Mesh;
+            if (glowLayer && glowLayer.material instanceof THREE.ShaderMaterial) {
+                glowLayer.material.uniforms.viewVector.value = new THREE.Vector3().subVectors(
+                    state.camera.position,
+                    mesh.position
+                );
+            }
+        });
 
         // Neural Light Flow (animated rim glow)
         const t = state.clock.elapsedTime;
@@ -373,7 +416,11 @@ export default function BrainScene() {
                 <BackgroundGradient />
                 <Nebula />
                 <BrainModel />
-                <Starfield />
+
+                {/* === Multicolor Starfield (Navy, Royal, White) === */}
+                <Starfield color="#0a192f" radius={80} count={300} size={0.5} /> {/* Navy */}
+                <Starfield color="#2563eb" radius={80} count={300} size={0.6} /> {/* Royal */}
+                <Starfield color="#ffffff" radius={80} count={200} size={0.4} /> {/* White */}
 
                 <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.4} />
             </Canvas>

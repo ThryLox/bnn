@@ -2,6 +2,24 @@ import NavBar from '@/components/NavBar';
 import { getAllIdeas } from '@/lib/content';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import { Metadata } from 'next';
+
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+    const ideas = getAllIdeas();
+    const idea = ideas.find((i) => i.slug === params.slug);
+
+    if (!idea) return { title: 'Not Found' };
+
+    return {
+        title: `${idea.title} | BNN`,
+        description: idea.description,
+        openGraph: {
+            title: `${idea.title} | BNN`,
+            description: idea.description,
+            type: 'article',
+        },
+    };
+}
 
 export async function generateStaticParams() {
     const ideas = getAllIdeas();
