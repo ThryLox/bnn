@@ -344,7 +344,7 @@ function BrainModel() {
             const glowMesh = new THREE.Mesh(mesh.geometry, glowMat);
             glowMesh.name = "GlowLayer";
             glowMesh.scale.multiplyScalar(1.05); // Slightly larger
-            mesh.add(glowMesh);
+            // mesh.add(glowMesh); // REMOVED: Caused duplication and blowout
         });
     }, [scene]);
 
@@ -358,9 +358,9 @@ function BrainModel() {
         targets.forEach((mesh) => {
             if (mesh.material && (mesh.material as THREE.MeshPhysicalMaterial).emissive) {
                 const mat = mesh.material as THREE.MeshPhysicalMaterial;
-                // Slow, deep crystal resonance
-                const pulse = Math.sin(t * 0.5) * 0.5 + 0.5; // Slow pulse
-                mat.emissiveIntensity = 0.2 + pulse * 0.1;
+                // Sharper, higher intensity pulse to compensate for removed glow layer
+                const pulse = Math.sin(t * 0.8) * 0.5 + 0.5;
+                mat.emissiveIntensity = 0.5 + pulse * 1.5; // Brighter gold glow
             }
         });
     });
