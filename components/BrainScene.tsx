@@ -339,7 +339,7 @@ function BrainModel() {
 
             glowMat.uniforms.glowColor.value = new THREE.Color(ACTIVE_THEME.secondary);
             glowMat.uniforms.c.value = 1.0;
-            glowMat.uniforms.p.value = 2.0;
+            glowMat.uniforms.p.value = 4.0; // Sharper edge to prevent blowout
 
             const glowMesh = new THREE.Mesh(mesh.geometry, glowMat);
             glowMesh.name = "GlowLayer";
@@ -368,7 +368,7 @@ function BrainModel() {
     return (
         <group ref={groupRef} position={[0, positionY, 0]}>
             <Center>
-                <primitive object={scene} scale={[scale, scale * 0.7, scale * 0.9]} />
+                <primitive object={scene} scale={[scale, scale, scale]} />
             </Center>
         </group>
     );
