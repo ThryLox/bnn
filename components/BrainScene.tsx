@@ -358,9 +358,9 @@ function BrainModel() {
         targets.forEach((mesh) => {
             if (mesh.material && (mesh.material as THREE.MeshPhysicalMaterial).emissive) {
                 const mat = mesh.material as THREE.MeshPhysicalMaterial;
-                // Sharper, higher intensity pulse to compensate for removed glow layer
+                // Calibrated resonance: visible gold but not blowing out to white
                 const pulse = Math.sin(t * 0.8) * 0.5 + 0.5;
-                mat.emissiveIntensity = 0.5 + pulse * 1.5; // Brighter gold glow
+                mat.emissiveIntensity = 0.2 + pulse * 0.4; // Toned down
             }
         });
     });
@@ -368,7 +368,7 @@ function BrainModel() {
     return (
         <group ref={groupRef} position={[0, positionY, 0]}>
             <Center>
-                <primitive object={scene} scale={[scale, scale, scale]} />
+                <primitive object={scene} scale={[scale, scale * 0.7, scale * 0.9]} />
             </Center>
         </group>
     );
