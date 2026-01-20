@@ -287,7 +287,7 @@ function BrainModel() {
         scene.traverse((child) => {
             if ((child as THREE.Mesh).isMesh) {
                 // Skip our custom added meshes to prevent re-processing
-                if (child.name === "Subsurface" || child.name === "OcclusionCore") return;
+                if (child.name === "Subsurface" || child.name === "OcclusionCore" || child.name === "GlowLayer") return;
                 foundTargets.push(child as THREE.Mesh);
             }
         });
@@ -299,6 +299,8 @@ function BrainModel() {
             if (oldSubsurface) mesh.remove(oldSubsurface);
             const oldOcclusion = mesh.getObjectByName("OcclusionCore");
             if (oldOcclusion) mesh.remove(oldOcclusion);
+            const oldGlow = mesh.getObjectByName("GlowLayer");
+            if (oldGlow) mesh.remove(oldGlow);
 
             // === 1. Beloit Blue Crystal (Stable) ===
             const jadeMat = new THREE.MeshPhysicalMaterial({
@@ -336,8 +338,8 @@ function BrainModel() {
             });
 
             glowMat.uniforms.glowColor.value = new THREE.Color(ACTIVE_THEME.secondary);
-            glowMat.uniforms.c.value = 0.5;
-            glowMat.uniforms.p.value = 4.5;
+            glowMat.uniforms.c.value = 1.0;
+            glowMat.uniforms.p.value = 2.0;
 
             const glowMesh = new THREE.Mesh(mesh.geometry, glowMat);
             glowMesh.name = "GlowLayer";
@@ -350,17 +352,6 @@ function BrainModel() {
         if (groupRef.current) {
             groupRef.current.rotation.y += delta * 0.02;
         }
-
-        // Update glow shader viewVector
-        targets.forEach((mesh) => {
-            const glowLayer = mesh.getObjectByName("GlowLayer") as THREE.Mesh;
-            if (glowLayer && glowLayer.material instanceof THREE.ShaderMaterial) {
-                glowLayer.material.uniforms.viewVector.value = new THREE.Vector3().subVectors(
-                    state.camera.position,
-                    mesh.position
-                );
-            }
-        });
 
         // Neural Light Flow (animated rim glow)
         const t = state.clock.elapsedTime;
